@@ -1,0 +1,91 @@
+{
+  "description": "",
+  "edition": 2,
+  "graph": {
+    "edges": [
+      {
+        "source": {
+          "exec_alias": "exec",
+          "node_id": 3
+        },
+        "target": {
+          "exec_alias": "exec",
+          "node_id": 1
+        }
+      },
+      {
+        "source": {
+          "exec_alias": "exec",
+          "node_id": 4
+        },
+        "target": {
+          "exec_alias": "exec",
+          "node_id": 3
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "alias": "passive_end",
+        "definition_id": "caido/passive-end",
+        "display": {
+          "x": 0,
+          "y": 300
+        },
+        "id": 1,
+        "inputs": [],
+        "name": "Passive End",
+        "version": "0.1.0"
+      },
+      {
+        "alias": "javascript",
+        "definition_id": "caido/http-code-js",
+        "display": {
+          "x": 10,
+          "y": -20
+        },
+        "id": 3,
+        "inputs": [
+          {
+            "alias": "request",
+            "value": {
+              "data": "$on_intercept_response.request",
+              "kind": "ref"
+            }
+          },
+          {
+            "alias": "response",
+            "value": {
+              "data": "$on_intercept_response.response",
+              "kind": "ref"
+            }
+          },
+          {
+            "alias": "code",
+            "value": {
+              "data": "export async function run({ request, response }, sdk) {\n  let body = response.getBody().toText()\n  const hasSourceMap = body.indexOf(\"//# sourceMappingURL=\") !== -1;\n  //sdk.console.log(`Hello from SourceMap workflow. HasSourceMap for: ${request.getPath()} is: ${hasSourceMap}`);\n  if (hasSourceMap) {\n    //sdk.console.log(\"Adding finding for SourceMap workflow\");\n    let description = `Found JavaScript file have SourceMap enabled for path: ${request.getPath()}`\n    await sdk.findings.create({title:\"Javascript SourceMap detected\",\n      description:description,\n      request:request,\n      reporter:\"JavaScript SourceMap finder\",\n      dedupeKey:description});\n  }\n}\n",
+              "kind": "string"
+            }
+          }
+        ],
+        "name": "Javascript",
+        "version": "0.1.0"
+      },
+      {
+        "alias": "on_intercept_response",
+        "definition_id": "caido/on-intercept-response",
+        "display": {
+          "x": -100,
+          "y": -570
+        },
+        "id": 4,
+        "inputs": [],
+        "name": "On Intercept Response",
+        "version": "0.1.0"
+      }
+    ]
+  },
+  "id": "f62c762b-e33c-4d71-9fd1-67111db05284",
+  "kind": "passive",
+  "name": "JavaScript Sourcemap finder"
+}
