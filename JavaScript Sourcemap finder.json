@@ -20,6 +20,16 @@
         },
         "target": {
           "exec_alias": "exec",
+          "node_id": 6
+        }
+      },
+      {
+        "source": {
+          "exec_alias": "true",
+          "node_id": 6
+        },
+        "target": {
+          "exec_alias": "exec",
           "node_id": 3
         }
       }
@@ -41,8 +51,8 @@
         "alias": "javascript",
         "definition_id": "caido/http-code-js",
         "display": {
-          "x": 10,
-          "y": -20
+          "x": -60,
+          "y": -140
         },
         "id": 3,
         "inputs": [
@@ -81,6 +91,26 @@
         "id": 4,
         "inputs": [],
         "name": "On Intercept Response",
+        "version": "0.1.0"
+      },
+      {
+        "alias": "in_scope",
+        "definition_id": "caido/in-scope",
+        "display": {
+          "x": -70,
+          "y": -380
+        },
+        "id": 6,
+        "inputs": [
+          {
+            "alias": "request",
+            "value": {
+              "data": "$on_intercept_response.request",
+              "kind": "ref"
+            }
+          }
+        ],
+        "name": "In Scope",
         "version": "0.1.0"
       }
     ]
